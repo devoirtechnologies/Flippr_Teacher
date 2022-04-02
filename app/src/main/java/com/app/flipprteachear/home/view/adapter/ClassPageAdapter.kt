@@ -38,11 +38,13 @@ public class ClassPageAdapter(var classPage: ForClassPageChange) : RecyclerView.
          with(holder.binding){
             details!![position].let {
                tvClass.text=it.class_name
-                tvChapterName.text =it.subject_name+" | "+ it.students_count +" Students"
-                tvAvergPoints.text = it.avg_points.toString()
-                tvSyllabus.text=it.avg_syllabus_done.toString()+"%"
-                tvConfidenc.text= it.avg_confid.toString()+"/10"
-                seekBar.progress = it.avg_syllabus_done
+                tvChapterName.text ="${it.subject_name+" | "+ it.students_count} Students"
+                tvAvergPoints.text = "${it.avg_points}"
+                tvSyllabus.text="${it.avg_syllabus_done}%"
+                tvConfidenc.text=  "${it.avg_confid}/10"
+                seekBar.progress = it.avg_syllabus_done!!
+                tvHomework.text = "${it.avg_homework}%"
+                tvSyllabMaster.text = "${it.avg_syllabus_mastered}%"
             }
 
          }

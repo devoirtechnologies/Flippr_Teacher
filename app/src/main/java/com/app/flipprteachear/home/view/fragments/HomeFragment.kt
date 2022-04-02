@@ -1,6 +1,7 @@
 package com.app.flipprteachear.home.view.fragments
 
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,9 +41,10 @@ import java.util.*
 class HomeFragment : Fragment(), ForClassPageChange {
       lateinit var viewModel: MainViewModel
       lateinit var viewBinding:FragmentHome1Binding
-      lateinit var pojoTeacherClass: PojoTeacherClass
+      private var pojoTeacherClass: PojoTeacherClass?=null
       private var pref: PreferenceManager?=null
       var possn =0
+       var poss =0
         private val studentAdapter by lazy {
             classStudentAdapter(1)
         }
@@ -140,18 +142,19 @@ class HomeFragment : Fragment(), ForClassPageChange {
         }
 
         try{
-            if(type == 1){
-                Collections.sort(pojoTeacherClass.details[0].students,StuPointComparator)
-                studentAdapter.updateListType(pojoTeacherClass.details[0].students)
-            }else if(type == 2 || type == 4){
-                Collections.sort(pojoTeacherClass.details[0].students,StuPointComparator2)
-                studentAdapter.updateListType(pojoTeacherClass.details[0].students)
-            }else if(type == 4){
-                Collections.sort(pojoTeacherClass.details[0].students,StuPointComparator2)
-                studentAdapter.updateListType(pojoTeacherClass.details[0].students)
-            }else if(type == 5){
-                Collections.sort(pojoTeacherClass.details[0].students,StuPointComparator4)
-                studentAdapter.updateListType(pojoTeacherClass.details[0].students)
+            pojoTeacherClass?.details!![poss].let {
+                if(type == 1){
+                Collections.sort(it.students,StuPointComparator)
+                }else if(type == 2  ){
+                Collections.sort(it.students,StuPointComparator2)
+                }else if(type == 3){
+                Collections.sort(it.students,StuPointComparator3)
+                }else if(type == 4){
+                Collections.sort(it.students,StuPointComparator4)
+                }else if(type == 5){
+                Collections.sort(it.students,StuPointComparator5)
+                }
+                studentAdapter.updateListType(it.students!!)
             }
             studentAdapter.updateType(type)
         }catch (e:Exception){
@@ -204,7 +207,7 @@ class HomeFragment : Fragment(), ForClassPageChange {
     private fun setTeacherClassData(it: PojoTeacherClass) {
 
         with(viewBinding){
-           // rvClassPages.adapter =classPageAdapter
+           rvClassPages.adapter =classPageAdapter
             try {
                 PagerSnapHelper().attachToRecyclerView(rvClassPages)
             }catch (e:Exception){e.printStackTrace()}
@@ -212,24 +215,18 @@ class HomeFragment : Fragment(), ForClassPageChange {
 
             val layoutManager = rvClassPages.layoutManager as LinearLayoutManager
 
-            if (it.details != null){
-                classPageAdapter.updateList(it.details)
-            }
-
-            if(it.details != null){
-                if (it.details[0].students != null){
-                    studentAdapter.updateListType(it.details[0].students)
+            it.details?.let {
+                classPageAdapter.updateList(it)
+                it[0].students.let {
+                    studentAdapter.updateListType(it!!)
+                }
+                it[0].chapters.let {
+                    chapterAdapterr.updateListType(it!!)
                 }
 
-                if (it.details[0].chapters != null){
-                    chapterAdapterr.updateListType(it.details[0].chapters)
-                }
             }
 
-
-
-
-           // viewBinding.rvUchapters.adapter =chapterAdapterr
+            // viewBinding.rvUchapters.adapter =chapterAdapterr
             rvClassPages.addOnScrollListener(object : RecyclerView.OnScrollListener(){
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
@@ -237,16 +234,19 @@ class HomeFragment : Fragment(), ForClassPageChange {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     try {
-                        var poss = layoutManager.findFirstCompletelyVisibleItemPosition()
+                          poss = layoutManager.findFirstCompletelyVisibleItemPosition()
                         Log.e("TAG", "onScrolled: $poss")
                         possn = poss.plus(1)
-                         tvTitleValue.text = "("+possn +" of " +pojoTeacherClass.details.size+")"
-                        if(!it.details.isNullOrEmpty())
-                            if(!it.details[poss].students.isNullOrEmpty())
-                                studentAdapter.updateListType(it.details[poss].students)
-                           if(!it.details[poss].chapters.isNullOrEmpty())
-                               chapterAdapterr.updateListType(it.details[poss].chapters)
-                           // else
+                         tvTitleValue.text = "("+possn +" of " +pojoTeacherClass?.details?.size+")"
+                        if(poss!=-1)
+                        it.details?.let {
+                            if(!it[poss].students.isNullOrEmpty())
+                                studentAdapter.updateListType(it[poss].students!!)
+                           if(!it[poss].chapters.isNullOrEmpty())
+                               chapterAdapterr.updateListType(it[poss].chapters!!)
+                        tvClass.text =getString(R.string.class_performance_in_physics,it[poss].subject_name )
+                        }
+
                     }catch (e:Exception){e.printStackTrace()}
 
                 }
@@ -257,7 +257,7 @@ class HomeFragment : Fragment(), ForClassPageChange {
 
     override fun changeClass(poss: Int) {
        var poss = poss+1
-       viewBinding.tvTitleValue.setText("("+possn +" of " +pojoTeacherClass.details.size+")")
+       viewBinding.tvTitleValue.setText("("+possn +" of " +pojoTeacherClass?.details?.size+")")
     }
 
     override fun getTopicPage(schoolCourseStructureId: String) {
@@ -275,50 +275,63 @@ class HomeFragment : Fragment(), ForClassPageChange {
 
     var StuPointComparator: Comparator<Student> =
         Comparator<Student> { s1, s2 ->
-            var point1 = ""
-            var point2 = ""
-            if (s1.total_points != null) point1 = s1.total_points else point1 = "0"
-            if (s2.total_points != null) point2 = s2.total_points else point2 = "0"
+
+            var  point1 = s1.total_points ?:"0"
+            var  point2 = s2.total_points ?:"0"
             val d1 = java.lang.Double.valueOf(point1)
             val d2 = java.lang.Double.valueOf(point2)
 
             return@Comparator java.lang.Double.compare(d2, d1)
-
-
-        }
-
-    var StuPointComparator2: Comparator<Student> =
-        Comparator<Student> { s1, s2 ->
-            val d1 = java.lang.Double.valueOf(s1.avg_confid)
-            val d2 = java.lang.Double.valueOf(s2.avg_confid)
-
-            return@Comparator java.lang.Double.compare(d2, d1)
-
         }
 
     var StuPointComparator3: Comparator<Student> =
         Comparator<Student> { s1, s2 ->
-            val d1 = java.lang.Double.valueOf(s1.syllabus_comp)
-            val d2 = java.lang.Double.valueOf(s2.syllabus_comp)
-
-            return@Comparator java.lang.Double.compare(d2, d1)
-
-
+            val d1 =  s1.syllabus_comp!!
+            val d2 =  s2.syllabus_comp!!
+            return@Comparator d2.compareTo(d1)
         }
-
-
+    var StuPointComparator2: Comparator<Student> =
+        Comparator<Student> { s1, s2 ->
+            val d1 =  s1.homework_comp!!
+            val d2 =   s2.homework_comp!!
+            return@Comparator d2.compareTo(d1)
+        }
 
     var StuPointComparator4: Comparator<Student> =
         Comparator<Student> { s1, s2 ->
-            val d1 = java.lang.Double.valueOf(s1.syllabus_mastered)
-            val d2 = java.lang.Double.valueOf(s2.syllabus_mastered)
+            val d1 = java.lang.Double.valueOf(s1.avg_confid!!)
+            val d2 = java.lang.Double.valueOf(s2.avg_confid!!)
 
             return@Comparator java.lang.Double.compare(d2, d1)
 
-
         }
 
+    var StuPointComparator5: Comparator<Student> =
+        Comparator<Student> { s1, s2 ->
+            val d1 =  s1.syllabus_mastered!!
+            val d2 =  s2.syllabus_mastered!!
 
+            return@Comparator d2.compareTo(d1)
+
+        }
+// pojoTeacherClass = response.body()!!
+//                    setTeacherClassData(response.body()!!)
+    override fun onResume() {
+        super.onResume()
+        Log.e("TAG", "onResume: ", )
+    }
+
+
+
+    override fun onStart() {
+        super.onStart()
+        Log.e("TAG", "onResume:onStart: ", )
+       // if(pojoTeacherClass!=null)
+         pojoTeacherClass?.let {
+             setTeacherClassData(pojoTeacherClass!!)
+            }
+
+    }
 
 
 }

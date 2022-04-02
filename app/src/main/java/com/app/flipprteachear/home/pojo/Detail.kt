@@ -1,15 +1,17 @@
 package com.app.flipprteachear.home.pojo
 
 data class Detail(
-    val academy_name: String,
-    val avg_confid: Int,
-    val avg_grit: Int,
-    val avg_points: Int,
-    val avg_syllabus_done: Int,
-    val chapters: List<Chapter>,
-    val class_name: String,
-    val students: List<Student>,
-    val students_count: Int,
-    val subject_id: String,
-    val subject_name: String
+    val academy_name: String?=null,
+    val avg_confid: Int?=null,
+    val avg_grit: Int?=null,
+    val avg_points: Int?=null,
+    val avg_syllabus_done: Int?=null,
+    val chapters: List<Chapter>?=null,
+    val class_name: String?=null,
+    val students: List<Student>?=null,
+    val students_count: Int?=null,
+    val subject_id: String?=null,
+    val avg_homework: String?=null,
+    val avg_syllabus_mastered: String?=null,
+    val subject_name: String?=null
 )

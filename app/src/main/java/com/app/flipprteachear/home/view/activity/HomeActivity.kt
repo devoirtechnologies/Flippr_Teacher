@@ -1,6 +1,7 @@
 package com.app.flipprteachear.home.view.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
 import android.graphics.Bitmap
@@ -197,9 +198,10 @@ class HomeActivity : AppCompatActivity(), ForStartLive, AllMcq_Fragment.OnDiagra
                 super.onBackPressed()
             }else   if (currentFragment?.javaClass == AllMcq_Fragment().javaClass) {
 
-            }else   if (currentFragment?.javaClass == TopicListFragment().javaClass){
-                homepage()
             }
+           /* else   if (currentFragment?.javaClass == TopicListFragment().javaClass){
+                homepage()
+            }*/
             else   if (currentFragment?.javaClass == HomeFragment().javaClass){
                 homepage()
             }
@@ -413,9 +415,17 @@ class HomeActivity : AppCompatActivity(), ForStartLive, AllMcq_Fragment.OnDiagra
 
     }
 
-    override fun onStart() {
+   /* override fun onStart() {
         super.onStart()
         getCheckUpDatedCode_onPlayStore()
+       // Log.e("TAG", "onResume:onStart:HH ", )
     }
+    override fun onResume() {
+        super.onResume()
+        Log.e("TAG", "onResume:HH ", )
+    }*/
+
+
+
 
 }

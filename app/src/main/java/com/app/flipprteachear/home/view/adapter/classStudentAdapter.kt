@@ -48,24 +48,25 @@ public class classStudentAdapter(var type: Int) : RecyclerView.Adapter<classStud
              if (students!![position].total_points == null) {
                  holder.tv_number2.text = "0°P"
              } else {
-                 holder.tv_number2.setText(
-                     students!![position].total_points.toDouble().toInt().toString() + "°P"
-                 )
+                 holder.tv_number2.setText( String.format("%.1f",students!![position].total_points!!.toFloat())+"°P")
              }
          } else if (type == 2) {
              holder.tv_number2.text =
-                 String.format("%.1f", students!![position].avg_confid).toString() + "% S"
+                 String.format("%.1f", students!![position].homework_comp)  + "% H"
          }else if (type == 3) {
              holder.tv_number2.text =
-                 String.format("%.1f", students!![position].syllabus_comp).toString() + "% S"
+                 String.format("%.1f", students!![position].syllabus_comp)  + "% S"
+         }else if (type == 4) {
+             holder.tv_number2.text =
+                 String.format("%.1f", students!![position].avg_confid)  + "% S"
          }else if (type == 5){
              holder.tv_number2.text =
-                 String.format("%.1f", students!![position].syllabus_mastered).toString() + " S"
+                 String.format("%.1f", students!![position].syllabus_mastered)  + " S"
          }
-         else {
-             holder.tv_number2.text =
-                 String.format("%.1f", students!![position].avg_confid).toString() + " C"
-         }
+//         else {
+//             holder.tv_number2.text =
+//                 String.format("%.1f", students!![position].avg_confid).toString() + " C"
+//         }
          holder.tv_studentName.setText(students!![position].first_name.toString() + " ")
 
     }

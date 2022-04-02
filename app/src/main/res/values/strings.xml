@@ -40,4 +40,7 @@
     <string name="live_class_code">LIVE class code</string>
     <string name="high_low">high → low</string>
     <string name="low_high">low → high</string>
+    <string name="class_performance_in_physics">Class Performance in %s </string>
+    <string name="syllabus_mastered">Syllabus Mastered</string>
+    <string name="syllabus">Syllabus</string>
 </resources>

@@ -38,6 +38,8 @@ public class TopicListAdapter(val classPage: ForLivePageChange) : RecyclerView.A
                          tv_chapterStatus.text = "Ongoing in class"
                      else if (it.teacher_activity_status.equals("0",false))
                          tv_chapterStatus.text = "Done in class"
+                     else if (it.teacher_activity_status.isEmpty())
+                         tv_chapterStatus.text = "Not started in class"
 
                       tv_subjectTopic.text  = it.subject_name+ ": "+ it.topic_name
                      var time = String.format("%.0f",it.session_total_time/60f)

@@ -124,17 +124,18 @@ public class chapterAdapter(var classPage: ForClassPageChange, var requireActivi
                         holder.tv_status.text = "Ongoing in class"
                      else if (it.teacher_activity_status.equals("0",false))
                         holder.tv_status.text = "Done in class"
+                    else if (it.teacher_activity_status.isEmpty())
+                        holder.tv_status.text = "Not started in class"
 
-
-        try {
-            if (!it.chapter_image.equals("", false)) {
-                Glide.with(requireActivity)
-                    .load(it.chapter_image)
-                    .into(holder.iv_topicImage)
-            }
-        } catch (exc: Exception) {
-            exc.printStackTrace()
-        }
+                try {
+                    if (!it.chapter_image.equals("", false)) {
+                        Glide.with(requireActivity)
+                            .load(it.chapter_image)
+                            .into(holder.iv_topicImage)
+                    }
+                } catch (exc: Exception) {
+                    exc.printStackTrace()
+                }
        /* try {
             if (topicDetails!![position].getSessionTotalTime() === 0) {
                 topicDetails!![position].setSessionTotalTime(1.0)
