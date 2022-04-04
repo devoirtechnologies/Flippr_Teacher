@@ -66,6 +66,8 @@ public class chapterAdapter(var classPage: ForClassPageChange, var requireActivi
         }
         holder.tv_chapterStatus.text = titleName
         holder.tv_chaptername.text = title
+        //  var time = String.format("%.1f",it.session_total_time!!/60f)
+        holder.tv_Duration .text = "${String.format("%.0f",it.session_total_time!!/60f)} min to finish"
        /* if (topicDetails!![position].getSessionType() != null) {
             if (topicDetails!![position].getSessionType().equals("3")) {
                 holder.tv_status.text =
@@ -124,7 +126,7 @@ public class chapterAdapter(var classPage: ForClassPageChange, var requireActivi
                         holder.tv_status.text = "Ongoing in class"
                      else if (it.teacher_activity_status.equals("0",false))
                         holder.tv_status.text = "Done in class"
-                    else if (it.teacher_activity_status.isEmpty())
+                    else if (it.teacher_activity_status!!.isEmpty())
                         holder.tv_status.text = "Not started in class"
 
                 try {
@@ -136,40 +138,12 @@ public class chapterAdapter(var classPage: ForClassPageChange, var requireActivi
                 } catch (exc: Exception) {
                     exc.printStackTrace()
                 }
-       /* try {
-            if (topicDetails!![position].getSessionTotalTime() === 0) {
-                topicDetails!![position].setSessionTotalTime(1.0)
-            }
-            if (topicDetails!![position].getSessionSpendTime() === 0) {
-                topicDetails!![position].setSessionSpendTime(1.0)
-            }
-            totalTimeSpent =
-                (topicDetails!![position].getSessionSpendTime() * 100 / (topicDetails!![position].getSessionTotalTime() + topicDetails!![position].getSessionSpendTime()))
-            if (totalTimeSpent!!.toInt() == 0) totalTimeSpent = 1.0
-            Log.e(
-                "totalTimeSpent0tt...",
-                "spendTime.." + topicDetails!![position].getSessionSpendTime()
-                    .toString() + " ....  toatltime:- " + topicDetails!![position].getSessionTotalTime()
-            )
-            Log.e(
-                "totalTimeSpent0tt...",
-                totalTimeSpent.toString() + " ....  TopicId:- " + topicDetails!![position].getTopicId()
-            )
-            holder.seekBar.progress = totalTimeSpent!!.toInt()
-            totalTimeSpent = (topicDetails!![position].getSessionTotalTime() / 60)
-            //  System.out.println("totalTimeSpent0tt..."+totalTimeSpent +" ....  "+seekBarTime);
-            if (totalTimeSpent!!.toInt() == 0) {
-                totalTimeSpent = 1.0
-            }
-            holder.tv_Duration.text = totalTimeSpent!!.toInt().toString() + " min to finish"
-        } catch (exc: Exception) {
-            exc.printStackTrace()
-        }*/
+
          holder.itemView.setOnClickListener { v->
              //..frameFullhoome
              //SharedPreferences.Editor = pref.edit()
 
-             pref!!.putValueString("chapter_ID", it.chapter_id)
+             pref!!.putValueString("chapter_ID", it.chapter_id?:"")
              pref!!.putValueString("duration_mins", "")
 
 
@@ -182,8 +156,8 @@ public class chapterAdapter(var classPage: ForClassPageChange, var requireActivi
 
 
             reMain.setOnClickListener {v->
-                Log.d("HelloChapterId",it.chapter_id)
-                classPage.getTopicPage(it.school_course_structure_id)
+                Log.d("HelloChapterId",it.chapter_id?:"")
+                classPage.getTopicPage(it.school_course_structure_id?:"")
             }
         }
         }

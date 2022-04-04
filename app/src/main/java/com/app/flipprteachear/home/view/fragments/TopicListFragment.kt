@@ -104,20 +104,23 @@ class TopicListFragment : Fragment(), ForLivePageChange {
         it.topic_details.let {
             topicListAdapter.updateList(it)
             if(!it.isNullOrEmpty())
-            viewBinding.tvTopicTitle.text = it[0].topic_name
+            viewBinding.tvTopicTitle.text = it[0].chapter_name?:""
         }
     }
 
     override fun golivePage(topicDetail: TopicDetail) {
-        Log.d("HelloTopicId",topicDetail.topic_name)
-        Log.d("HelloTopicId",topicDetail.school_class_course_id)
-        val ft = activity?.supportFragmentManager!!.beginTransaction()
-        var bundle =Bundle()
-        bundle.putString("schoolCourseStructureId",topicDetail.school_course_structure_id)
-        bundle.putString("school_class_course_id",topicDetail.school_class_course_id)
-        bundle.putString("chapter_name",topicDetail.chapter_name)
-        bundle.putString("topic_name",topicDetail.topic_name)
-        utills.replacefrag_withBackStack(ft, LiveFragment(), bundle, "topicList")
+//        Log.d("HelloTopicId",topicDetail.topic_name)
+//        Log.d("HelloTopicId",topicDetail.school_class_course_id)
+        topicDetail?.let {
+            val ft = activity?.supportFragmentManager!!.beginTransaction()
+            val bundle =Bundle()
+            bundle.putString("schoolCourseStructureId",it.school_course_structure_id?:"")
+            bundle.putString("school_class_course_id",it.school_class_course_id?:"")
+            bundle.putString("chapter_name",it.chapter_name?:"")
+            bundle.putString("topic_name",it.topic_name?:"")
+            utills.replacefrag_withBackStack(ft, LiveFragment(), bundle, "topicList")
+        }
+
     }
 
     override fun endlivePage() {

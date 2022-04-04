@@ -1,20 +1,20 @@
 package com.app.flipprteachear.home.pojo.topicDetail
 
 data class TopicDetail(
-    val chapter_id: String,
-    val chapter_image: String,
-    val chapter_name: String,
-    val cluster_id: String,
-    val ques_count: Int,
-    val school_class_course_id: String,
-    val school_course_structure_id: String,
-    val school_id: String,
-    var session_total_time: Float,
-    var spend_session_time: Float,
-    val subject_id: String,
-    val subject_name: String,
-    val teacher_activity_status: String,
-    val topic_id: String,
-    val topic_image: String,
-    val topic_name: String
+    val chapter_id: String?=null,
+    val chapter_image: String?=null,
+    val chapter_name: String?=null,
+    val cluster_id: String?=null,
+    val ques_count: Int?=null,
+    val school_class_course_id: String?=null,
+    val school_course_structure_id: String?=null,
+    val school_id: String?=null,
+    var session_total_time: Float?=null,
+    var spend_session_time: Float?=null,
+    val subject_id: String?=null,
+    val subject_name: String?=null,
+    val teacher_activity_status: String?=null,
+    val topic_id: String?=null,
+    val topic_image: String?=null,
+    val topic_name: String?=null
 )

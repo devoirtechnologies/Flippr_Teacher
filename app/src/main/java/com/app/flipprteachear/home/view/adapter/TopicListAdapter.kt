@@ -31,28 +31,27 @@ public class TopicListAdapter(val classPage: ForLivePageChange) : RecyclerView.A
              with(holder){
 
                  topicList!![position].let {
-                     iv_image.load(it.topic_image){
+                     iv_image.load(it.topic_image?:""){
                          placeholder(R.drawable.image)
                      }
                      if (it.teacher_activity_status.equals("1", false))
                          tv_chapterStatus.text = "Ongoing in class"
                      else if (it.teacher_activity_status.equals("0",false))
                          tv_chapterStatus.text = "Done in class"
-                     else if (it.teacher_activity_status.isEmpty())
+                     else if (it.teacher_activity_status!!.isEmpty())
                          tv_chapterStatus.text = "Not started in class"
 
-                      tv_subjectTopic.text  = it.subject_name+ ": "+ it.topic_name
-                     var time = String.format("%.0f",it.session_total_time/60f)
+                      tv_subjectTopic.text  =   it.topic_name?:""
+                     var time = String.format("%.1f",it.session_total_time!!/60f)
                      Log.e("TAG", "onBindViewHolder: $time", )
                       tv_topicn_mins.text  =   context.resources.getString(R.string._15_min_78_questions,  (if(time.equals("0")) "1" else time)+"", it.ques_count.toString())
                      cbx.isChecked = if(it.teacher_activity_status.equals("1", false) ) true
                                       else false
                      cbx.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener{
                          override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-                             if(isChecked) classPage.checkBoxUpdate("1", it.school_course_structure_id)
-                             else classPage.checkBoxUpdate("0", it.school_course_structure_id)
+                             if(isChecked) classPage.checkBoxUpdate("1", it.school_course_structure_id!!)
+                             else classPage.checkBoxUpdate("0", it.school_course_structure_id!!)
                          }
-
                      })
                  }
 
@@ -69,8 +68,6 @@ public class TopicListAdapter(val classPage: ForLivePageChange) : RecyclerView.A
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-
     }
 
     override fun getItemCount(): Int {

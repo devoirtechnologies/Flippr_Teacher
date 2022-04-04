@@ -43,8 +43,8 @@
                     android:lineSpacingExtra="1dp"
                     android:minHeight="120dp"
                     android:padding="8dp"
-                    app:setTextColor="@color/navicolor"
-                    android:textColor="@color/white"
+                    app:setTextColor="@color/white"
+                    android:textColor="@color/navicolor"
                     android:textSize="22sp"
                     android:textStyle="normal" />
 
