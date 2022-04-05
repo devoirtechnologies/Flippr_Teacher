@@ -49,6 +49,7 @@ class HomeFragment : Fragment(), ForClassPageChange {
             classStudentAdapter(1)
         }
 
+
         private val chapterAdapterr by lazy {
             chapterAdapter(this, requireActivity(), pref)
         }
